@@ -1,0 +1,46 @@
+name: devcore
+
+services:
+  web:
+    restart: always
+    image: nginx:latest
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./src:/usr/share/nginx/html
+    ports:
+      - "80:80"
+    networks:
+      - shared_network
+  db:
+    restart: always
+    image: mysql/mysql-server:latest
+    volumes:
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - db_volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      TZ: Asia/Tokyo
+    ports:
+      - "3306:3306"
+    networks:
+      - shared_network
+  db-manager:
+    restart: always
+    image: arm64v8/phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    ports:
+      - "9090:80"
+    networks:
+      - shared_network
+    depends_on:
+      - db
+
+networks:
+  shared_network:
+
+volumes:
+  db_volume:

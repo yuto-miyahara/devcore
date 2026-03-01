@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>dashboard | devcore</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+html {
+  color-scheme: light dark;
+}
+
+body {
+  width: 35em;
+  margin: 0 auto;
+  font-family: sans-serif;
+}
+
+#project-list li:not(:first-child) {
+  margin-top: .25em;
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    width: auto;
+    padding-inline: 1em;
+  }
+
+  h1 {
+    font-size: 1.5em;
+    text-align: center;
+  }
+}
+</style>
+<script>
+// プロジェクト設定（手動編集）
+const projects = [
+  {
+    name: 'DB Manager',
+    domain: 'db-manager.devcore',
+    port: 9090
+  },
+  // {
+  //   name: 'プロジェクト名',
+  //   domain: 'プロジェクト名.devcore',
+  //   port: ポート番号(別端末からのアクセス用)
+  // },
+];
+
+// プロジェクトリスト生成
+document.addEventListener('DOMContentLoaded', function() {
+    const configIP = '192.168.10.101'; // 設定IP
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    const projectList = document.getElementById('project-list');
+
+    projects.forEach(project => {
+        const li = document.createElement('li');
+        const linkAddress = isMobile
+            ? `${configIP}:${project.port}`
+            : project.domain;
+
+        li.innerHTML = `<a href="http://${linkAddress}" target="_blank">${project.name}</a>`;
+        projectList.appendChild(li);
+    });
+});
+</script>
+</head>
+<body>
+  <h1>📊 devcore Dashboard</h1>
+  <ul id="project-list">
+    <!-- プロジェクトリストはJavaScriptで生成 -->
+  </ul>
+</body>
+</html>

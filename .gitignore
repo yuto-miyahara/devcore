@@ -1,0 +1,19 @@
+### Windows ###
+Thumbs.db
+
+### macOS ###
+.DS_Store
+
+### VisualStudioCode ###
+*.code-workspace
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+### Project ###
+
+# MySQL dump files
+docker/mysql/init/dump/*
+!docker/mysql/init/dump/.gitkeep
